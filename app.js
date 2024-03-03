@@ -50,8 +50,8 @@ app.get("/", async (req, res) => {
 app.use("/albums", require("./routes/album"));
 app.use("/songs", require("./routes/song"));
 
-app.get("/album/:id", getAlbum);
-app.get("/song/:id", getSong);
+app.get("/album/:name", getAlbum);
+app.get("/song/:name", getSong);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
