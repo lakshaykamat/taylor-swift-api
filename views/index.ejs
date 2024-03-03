@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Taylor Swift API</title>
+  </head>
+  <body>
+    <h1>Welcome to <%= appName %></h1>
+    <h2>Albums</h2>
+    <ul>
+      <% albums.forEach(album => { %>
+      <li><%= album.title %> - <%= album.releaseYear %></li>
+      <% }); %>
+    </ul>
+  </body>
+</html>
