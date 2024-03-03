@@ -4,14 +4,110 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Taylor Swift API</title>
+    <!-- Include Tailwind CSS via CDN -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
   </head>
-  <body>
-    <h1>Welcome to <%= appName %></h1>
-    <h2>Albums</h2>
-    <ul>
-      <% albums.forEach(album => { %>
-      <li><%= album.title %> - <%= album.releaseYear %></li>
-      <% }); %>
-    </ul>
+  <body class="bg-[#C6A969]">
+    <div class="max-w-3xl mx-auto my-12 px-5">
+      <div class="mb-3">
+        <div
+          class="flex flex-wrap gap-3 justify-center sm:justify-start items-center"
+        >
+          <img src="/images/taylor.png" class="w-24 h-24 sm:w-20 sm:h-20" />
+          <h1 class="text-4xl font-extrabold mb-3 text-center sm:text-start">
+            <%= appName %>
+          </h1>
+        </div>
+        <hr />
+      </div>
+      <p class="text-base mb-5">
+        Open Source API for Taylor Swift Albums and Songs<br />
+        <a
+          href="https://taylor-swift-api.onrender.com"
+          class="hover:underline font-semibold text-blue-500"
+          >https://taylor-swift-api.onrender.com</a
+        >
+      </p>
+
+      <div class="">
+        <h2 class="text-2xl font-semibold mb-3">API End points</h2>
+        <hr />
+        <ol class="list-decimal px-7 my-5 text-xl">
+          <li class="mb-5">
+            <h1 class="text-xl mb-1 font-semibold">Albums</h1>
+            <div class="flex mb-2 items-center text-base gap-2">
+              <span
+                class="bg-green-500 px-2 py-1 text-sm font-semibold text-white rounded"
+                >GET</span
+              >
+              <a
+                href="https://taylor-swift-api.onrender.com/albums"
+                class="bg-gray-200 px-2 hover:underline py-[2px]"
+                target="_blank"
+              >
+                <code>/albums</code>
+              </a>
+
+              <p class="text-base">Get a list of all albums.</p>
+            </div>
+            <div class="flex mb-2 items-start text-base gap-2">
+              <span
+                class="bg-green-500 px-2 py-1 text-sm font-semibold text-white rounded"
+                >GET</span
+              >
+              <a
+                href="https://taylor-swift-api.onrender.com/album/65e41600f129029a20653d42"
+                class="bg-gray-200 px-2 hover:underline py-[2px]"
+                target="_blank"
+              >
+                <code>/album/:id</code>
+              </a>
+
+              <p class="text-base">
+                Get detailed information about a specific album.
+              </p>
+            </div>
+          </li>
+          <li class="mb-5">
+            <h1 class="text-xl mb-1 font-semibold">Songs</h1>
+            <div class="flex mb-2 items-center text-base gap-2">
+              <span
+                class="bg-green-500 px-2 py-1 text-sm font-semibold text-white rounded"
+                >GET</span
+              >
+              <a
+                href="https://taylor-swift-api.onrender.com/songs"
+                class="bg-gray-200 px-2 hover:underline py-[2px]"
+                target="_blank"
+              >
+                <code>/songs</code>
+              </a>
+
+              <p class="text-base">Get a list of all songs.</p>
+            </div>
+            <div class="flex mb-2 items-center text-base gap-2">
+              <span
+                class="bg-green-500 px-2 py-1 text-sm font-semibold text-white rounded"
+                >GET</span
+              >
+              <a
+                href="https://taylor-swift-api.onrender.com/songs"
+                class="bg-gray-200 px-2 hover:underline py-[2px]"
+                target="_blank"
+              >
+                <code>/song/:id</code>
+              </a>
+
+              <p class="text-base">
+                Get detailed information about a specific song.
+              </p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </div>
   </body>
 </html>
