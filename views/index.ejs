@@ -3,7 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Taylor Swift API</title>
+    <title>
+      Taylor Swift API | Open Source API for Taylor Swift Albums and Songs
+    </title>
     <!-- Include Tailwind CSS via CDN -->
     <link
       href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
@@ -151,11 +153,11 @@
                   >GET</span
                 >
                 <a
-                  href="https://taylor-swift-api.onrender.com/album/65e41600f129029a20653d42"
+                  href="https://taylor-swift-api.onrender.com/album/Taylor%20Swift"
                   class="bg-gray-200 px-2 hover:underline py-1 rounded"
                   target="_blank"
                 >
-                  <code>/album/:id</code>
+                  <code>/album/:name</code>
                 </a>
               </div>
 
@@ -192,11 +194,11 @@
                   >GET</span
                 >
                 <a
-                  href="https://taylor-swift-api.onrender.com/songs"
+                  href="https://taylor-swift-api.onrender.com/song/Time%20McGraw"
                   class="bg-gray-200 px-2 hover:underline py-1 rounded"
                   target="_blank"
                 >
-                  <code>/song/:id</code>
+                  <code>/song/:name</code>
                 </a>
               </div>
               <p class="text-base">
@@ -206,9 +208,11 @@
           </li>
         </ol>
         <hr />
-        <button class="bg-gray-300 mt-4 text-center py-2 text-black w-full">
+        <button
+          class="flex sm:hidden bg-gray-300 mt-4 text-center py-2 text-black w-full"
+        >
           <a
-            class="flex sm:hidden items-center justify-center gap-2"
+            class="items-center justify-center gap-2"
             href="https://github.com/lakshaykamat/taylor-swift-api"
             target="_blank"
           >
