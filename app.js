@@ -20,6 +20,11 @@ app.use(helmet());
 app.use(morgan("dev"));
 app.use(bodyParser.json()); // Parse JSON requests
 
+// Specify the path to the images folder
+const imagesPath = path.join(__dirname, "/public/images");
+// Serve static files from the images folder
+app.use("/images", express.static(imagesPath));
+
 // Set EJS as the view engine
 app.set("view engine", "ejs");
 
