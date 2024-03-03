@@ -9,6 +9,49 @@
       href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
       rel="stylesheet"
     />
+
+    <!-- SEO Meta Tags -->
+    <meta
+      name="description"
+      content="Explore Taylor Swift's discography through this API. Get information about her albums, songs, and more."
+    />
+    <meta
+      name="keywords"
+      content="Taylor Swift, API, Music, Albums, Songs, Discography"
+    />
+    <meta name="author" content="Swiftie Fan" />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#ffffff" />
+
+    <!-- Open Graph / Facebook Meta Tags -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://taylor-swift-api.onrender.com" />
+    <meta property="og:title" content="Taylor Swift API" />
+    <meta
+      property="og:description"
+      content="Explore Taylor Swift's discography through this API. Get information about her albums, songs, and more."
+    />
+    <meta
+      property="og:image"
+      content="https://taylor-swift-api.onrender.com/images/taylor.png"
+    />
+    <meta property="og:image:alt" content="Taylor Swift API Logo" />
+
+    <!-- Twitter Meta Tags -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta
+      property="twitter:url"
+      content="https://taylor-swift-api.onrender.com"
+    />
+    <meta property="twitter:title" content="Taylor Swift API" />
+    <meta
+      property="twitter:description"
+      content="Explore Taylor Swift's discography through this API. Get information about her albums, songs, and more."
+    />
+    <meta
+      property="twitter:image"
+      content="https://taylor-swift-api.onrender.com/images/taylor.png"
+    />
   </head>
   <body class="bg-[#C6A969]">
     <div class="max-w-3xl mx-auto my-12 px-5">
@@ -38,33 +81,39 @@
         <ol class="list-decimal px-7 my-5 text-xl">
           <li class="mb-5">
             <h1 class="text-xl mb-1 font-semibold">Albums</h1>
-            <div class="flex mb-2 items-center text-base gap-2">
-              <span
-                class="bg-green-500 px-2 py-1 text-sm font-semibold text-white rounded"
-                >GET</span
-              >
-              <a
-                href="https://taylor-swift-api.onrender.com/albums"
-                class="bg-gray-200 px-2 hover:underline py-[2px]"
-                target="_blank"
-              >
-                <code>/albums</code>
-              </a>
+            <div
+              class="flex flex-col md:flex-row mb-2 items-start text-base gap-2"
+            >
+              <div>
+                <span class="bg-green-500 px-2 py-1 text-white rounded"
+                  >GET</span
+                >
+                <a
+                  href="https://taylor-swift-api.onrender.com/albums"
+                  class="bg-gray-200 px-2 hover:underline py-1 rounded"
+                  target="_blank"
+                >
+                  <code>/albums</code>
+                </a>
+              </div>
 
               <p class="text-base">Get a list of all albums.</p>
             </div>
-            <div class="flex mb-2 items-start text-base gap-2">
-              <span
-                class="bg-green-500 px-2 py-1 text-sm font-semibold text-white rounded"
-                >GET</span
-              >
-              <a
-                href="https://taylor-swift-api.onrender.com/album/65e41600f129029a20653d42"
-                class="bg-gray-200 px-2 hover:underline py-[2px]"
-                target="_blank"
-              >
-                <code>/album/:id</code>
-              </a>
+            <div
+              class="flex flex-col md:flex-row mb-2 items-start text-base gap-2"
+            >
+              <div>
+                <span class="bg-green-500 px-2 py-1 text-white rounded"
+                  >GET</span
+                >
+                <a
+                  href="https://taylor-swift-api.onrender.com/album/65e41600f129029a20653d42"
+                  class="bg-gray-200 px-2 hover:underline py-1 rounded"
+                  target="_blank"
+                >
+                  <code>/album/:id</code>
+                </a>
+              </div>
 
               <p class="text-base">
                 Get detailed information about a specific album.
@@ -73,34 +122,39 @@
           </li>
           <li class="mb-5">
             <h1 class="text-xl mb-1 font-semibold">Songs</h1>
-            <div class="flex mb-2 items-center text-base gap-2">
-              <span
-                class="bg-green-500 px-2 py-1 text-sm font-semibold text-white rounded"
-                >GET</span
-              >
-              <a
-                href="https://taylor-swift-api.onrender.com/songs"
-                class="bg-gray-200 px-2 hover:underline py-[2px]"
-                target="_blank"
-              >
-                <code>/songs</code>
-              </a>
+            <div
+              class="flex flex-col md:flex-row mb-2 items-start text-base gap-2"
+            >
+              <div>
+                <span class="bg-green-500 px-2 py-1 text-white rounded"
+                  >GET</span
+                >
+                <a
+                  href="https://taylor-swift-api.onrender.com/songs"
+                  class="bg-gray-200 px-2 hover:underline py-1 rounded"
+                  target="_blank"
+                >
+                  <code>/songs</code>
+                </a>
+              </div>
 
               <p class="text-base">Get a list of all songs.</p>
             </div>
-            <div class="flex mb-2 items-center text-base gap-2">
-              <span
-                class="bg-green-500 px-2 py-1 text-sm font-semibold text-white rounded"
-                >GET</span
-              >
-              <a
-                href="https://taylor-swift-api.onrender.com/songs"
-                class="bg-gray-200 px-2 hover:underline py-[2px]"
-                target="_blank"
-              >
-                <code>/song/:id</code>
-              </a>
-
+            <div
+              class="flex flex-col md:flex-row mb-2 items-start text-base gap-2"
+            >
+              <div>
+                <span class="bg-green-500 px-2 py-1 text-white rounded"
+                  >GET</span
+                >
+                <a
+                  href="https://taylor-swift-api.onrender.com/songs"
+                  class="bg-gray-200 px-2 hover:underline py-1 rounded"
+                  target="_blank"
+                >
+                  <code>/song/:id</code>
+                </a>
+              </div>
               <p class="text-base">
                 Get detailed information about a specific song.
               </p>
