@@ -64,7 +64,7 @@ const newSong = async (req, res) => {
       const savedSong = await song.save();
 
       // Update the associated album with the new song's ID
-      const validAlbum = await getAlbum(albumId);
+      const validAlbum = await Album.findById(albumId);
 
       if (!validAlbum) {
         return res.status(404).json({ error: "Album not found" });
