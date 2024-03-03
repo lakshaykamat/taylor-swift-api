@@ -33,7 +33,7 @@
     />
     <meta
       property="og:image"
-      content="https://taylor-swift-api.onrender.com/images/taylor.png"
+      content="https://taylor-swift-api.onrender.com/images/taylor-with-mic.jpg"
     />
     <meta property="og:image:alt" content="Taylor Swift API Logo" />
 
@@ -50,19 +50,43 @@
     />
     <meta
       property="twitter:image"
-      content="https://taylor-swift-api.onrender.com/images/taylor.png"
+      content="https://taylor-swift-api.onrender.com/images/taylor-with-mic.jpg"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Pacifico&display=swap"
+      rel="stylesheet"
     />
   </head>
+
   <body class="bg-[#C6A969]">
     <div class="max-w-3xl mx-auto my-12 px-5">
       <div class="mb-3">
-        <div
-          class="flex flex-wrap gap-3 justify-center sm:justify-start items-center"
-        >
-          <img src="/images/taylor.png" class="w-24 h-24 sm:w-20 sm:h-20" />
-          <h1 class="text-4xl font-extrabold mb-3 text-center sm:text-start">
-            <%= appName %>
-          </h1>
+        <div class="flex items-center justify-between">
+          <div class="flex justify-center flex-wrap gap-2 items-center">
+            <img
+              alt="taylor"
+              src="/images/taylor.png"
+              class="w-24 h-24 sm:w-20 sm:h-20"
+            />
+            <h1
+              style="font-family: Pacifico"
+              class="text-3xl sm:text-4xl mb-3 text-center sm:text-start"
+            >
+              <%= appName %>
+            </h1>
+          </div>
+          <a
+            class="hidden sm:block"
+            href="https://github.com/lakshaykamat/taylor-swift-api"
+            target="_blank"
+          >
+            <img
+              src="/images/github_icon.png"
+              alt="github icon"
+              class="w-10 h-10"
+          /></a>
         </div>
         <hr />
       </div>
@@ -161,6 +185,35 @@
             </div>
           </li>
         </ol>
+        <hr />
+        <button class="bg-gray-300 mt-4 text-center py-2 text-black w-full">
+          <a
+            class="flex sm:hidden items-center justify-center gap-2"
+            href="https://github.com/lakshaykamat/taylor-swift-api"
+            target="_blank"
+          >
+            <img
+              src="/images/github_icon.png"
+              alt="github icon"
+              class="w-6 h-6 invert"
+            /><span>Github</span></a
+          >
+        </button>
+        <div class="flex flex-wrap mt-4 items-center gap-4">
+          <h2 class="text-xl font-semibold">Credits</h2>
+          <a
+            target="_blank"
+            class="underline"
+            href="https://github.com/lakshaykamat"
+            >Lakshay Kamat
+          </a>
+          <a
+            target="_blank"
+            class="underline"
+            href="https://github.com/ruchisingh-dev"
+            >Ruchi Singh</a
+          >
+        </div>
       </div>
     </div>
   </body>
