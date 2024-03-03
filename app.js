@@ -32,18 +32,15 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
 app.get("/", async (req, res) => {
-  try {
-    // Fetch the albums data from your database
-    const albums = await Album.find({}, "title releaseYear").lean();
-    // Render the EJS template with the data
-    res.render("index", {
-      appName: "Taylor Swift API",
-      albums: albums,
-    });
-  } catch (error) {
-    console.error("Error fetching albums:", error.message);
-    res.status(500).send("Internal Server Error");
-  }
+  const githubLink = "https://github.com/lakshaykamat/taylor-swift-api";
+  const credist = [
+    { name: "Lakshay Kamat", githubLink: "https://github.com/lakshaykamat" },
+    { name: "Ruchi Singh", githubLink: "https://github.com/ruchisingh-dev" },
+  ];
+  // Render the EJS template with the data
+  res.render("index", {
+    appName: "Taylor Swift API",
+  });
 });
 
 // Use routes from separate files
