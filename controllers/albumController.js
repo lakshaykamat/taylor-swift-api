@@ -30,6 +30,7 @@ const getAlbum = async (req, res) => {
     const songs = await Promise.all(songPromises);
 
     album.tracks = cleanUpSongs(songs, album);
+    album.songs = album.tracks.length;
 
     res.json(album);
   } catch (error) {
@@ -48,6 +49,7 @@ const getAllAlbums = async (req, res) => {
       const songs = await Promise.all(songPromises);
 
       album.tracks = cleanUpSongs(songs, album);
+      album.songs = album.tracks.length;
     }
 
     return res.json(albums);
@@ -83,8 +85,7 @@ const deleteAlbum = async (req, res) => {
 
 const newAlbum = async (req, res) => {
   try {
-    const { title, artist, releaseYear, releaseDate, albumCover, user } =
-      req.body;
+    const { title, artist, releaseDate, albumCover, user } = req.body;
     if (!user || !isAdmin(user.username, user.password)) {
       return res.status(403).send("Forbidden");
     }

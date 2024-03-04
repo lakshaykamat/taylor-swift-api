@@ -1,11 +1,11 @@
 const Song = require("../models/Song");
 const Album = require("../models/Album");
-const { isAdmin } = require("../utils");
+const { isAdmin, getAlbumDetails } = require("../utils");
 
 const getSong = async (req, res) => {
   try {
     const { name } = req.params;
-    const song = await Song.findOne({ name })
+    const song = await Song.findOne({ name: { $regex: name, $options: "i" } })
       .select("-__v -_id") // Exclude unnecessary fields
       .lean();
 
@@ -14,29 +14,19 @@ const getSong = async (req, res) => {
     }
 
     // Get album details without the tracks property
-    const album = await Album.findById(song.albumId)
-      .select("-__v -_id") // Exclude unnecessary fields
-      .lean();
+    const albumDetails = await getAlbumDetails(song.albumId);
 
-    if (!album) {
+    if (!albumDetails) {
       return res.status(404).json({ error: "Album not found" });
     }
-
-    const albumDetails = {
-      title: album.title,
-      albumCover: album.albumCover,
-      artist: album.artist,
-      releaseYear: album.releaseYear,
-      releaseDate: album.realeaseDate,
-    };
 
     res.json({
       ...song,
       album: albumDetails,
     });
   } catch (error) {
-    console.error("Error fetching song:", error.message);
-    res.status(500).json({ error: "Internal Server Error" });
+    console.error("Error fetching songs");
+    errorHandler(res, error);
   }
 };
 
@@ -45,19 +35,22 @@ const getAllSongs = async (req, res) => {
     const songs = await Song.find().select("-__v -_id").lean();
 
     for (const song of songs) {
-      const album = await Album.findById(song.albumId)
-        .select("-__v -_id")
-        .lean();
+      // Use getAlbumDetails to get album details from albumId
+      const albumDetails = await getAlbumDetails(song.albumId);
 
-      if (album) {
-        song.albumName = album.title;
+      if (albumDetails) {
+        song.albumName = albumDetails.albumName;
         delete song.albumId; // Remove the original albumId field
       }
     }
 
     res.json(songs);
   } catch (error) {
-    console.error("Error fetching songs:", error.message);
+    console.error("Error fetching songs");
+    errorHandler(res, error);
+  }
+};
+
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -95,8 +88,8 @@ const newSong = async (req, res) => {
 
     res.json(savedSongs);
   } catch (error) {
-    console.error("Error creating songs and updating album:", error.message);
-    res.status(500).json({ error: "Internal Server Error" });
+    console.error("Error creating a song and updating an album");
+    errorHandler(res, error);
   }
 };
 
