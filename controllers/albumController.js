@@ -14,7 +14,6 @@ const cleanUpSongs = (songs, album) => {
 const getAlbum = async (req, res) => {
   try {
     const { name } = req.params;
-    console.log(name);
     const album = await Album.findOne({ title: name })
       .select("-__v")
       .select("-_id")
@@ -58,6 +57,32 @@ const getAllAlbums = async (req, res) => {
   }
 };
 
+const searchAlbum = async (req, res) => {
+  const { name } = req.query;
+
+  try {
+    // Use a regular expression to perform a case-insensitive search
+    const albums = await Album.find({ title: { $regex: name, $options: "i" } })
+      .select("-__v -_id")
+      .lean();
+
+    for (const album of albums) {
+      const songPromises = album.tracks.map((songId) =>
+        Song.findById(songId.toString()).select("-__v").select("-_id").lean()
+      );
+      const songs = await Promise.all(songPromises);
+
+      album.tracks = cleanUpSongs(songs, album);
+      album.songs = album.tracks.length;
+    }
+
+    res.json(albums);
+  } catch (error) {
+    console.error("Error searching songs:", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 const deleteAlbum = async (req, res) => {
   try {
     const { id } = req.params;
@@ -92,7 +117,6 @@ const newAlbum = async (req, res) => {
     const newAlbum = new Album({
       title,
       artist,
-      releaseYear,
       releaseDate,
       albumCover,
       tracks: [],
@@ -111,4 +135,5 @@ module.exports = {
   deleteAlbum,
   newAlbum,
   getAlbum,
+  searchAlbum,
 };

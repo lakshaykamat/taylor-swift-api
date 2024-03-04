@@ -51,6 +51,32 @@ const getAllSongs = async (req, res) => {
   }
 };
 
+const searchSongs = async (req, res) => {
+  const { name } = req.query;
+
+  try {
+    // Use a regular expression to perform a case-insensitive search
+    const songs = await Song.find({ name: { $regex: name, $options: "i" } })
+      .select("-__v -_id")
+      .lean();
+
+    // Fetch additional album details for each song
+    const songsWithAlbum = await Promise.all(
+      songs.map(async (song) => {
+        const albumDetails = await getAlbumDetails(song.albumId);
+
+        if (albumDetails) {
+          song.albumName = albumDetails.albumName;
+          delete song.albumId;
+        }
+
+        return song;
+      })
+    );
+
+    res.json(songsWithAlbum);
+  } catch (error) {
+    console.error("Error searching songs:", error.message);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -97,4 +123,5 @@ module.exports = {
   getSong,
   getAllSongs,
   newSong,
+  searchSongs,
 };

@@ -82,7 +82,7 @@
     />
   </head>
 
-  <body class="bg-[#C6A969]">
+  <body style="background-color: #f1e4c3">
     <div class="max-w-3xl mx-auto my-12 px-5">
       <div class="mb-3">
         <div class="flex items-center justify-between">
@@ -110,7 +110,7 @@
               class="w-10 h-10"
           /></a>
         </div>
-        <hr />
+        <hr class="h-1 rounded" style="background-color: #000" />
       </div>
       <p class="text-base mb-5">
         Open Source API for Taylor Swift Albums and Songs<br />
@@ -124,6 +124,7 @@
       <div class="">
         <h2 class="text-2xl font-semibold mb-3">API End points</h2>
         <hr />
+        <hr style="background-color: #3a3a3a; height: 2px" />
         <ol class="list-decimal px-7 my-5 text-xl">
           <li class="mb-5">
             <h1 class="text-xl mb-1 font-semibold">Albums</h1>
@@ -165,6 +166,24 @@
                 Get detailed information about a specific album.
               </p>
             </div>
+            <div
+              class="flex flex-col md:flex-row mb-2 items-start text-base gap-2"
+            >
+              <div>
+                <span class="bg-green-500 px-2 py-1 text-white rounded"
+                  >GET</span
+                >
+                <a
+                  href="https://taylor-swift-api.onrender.com/albums/?name=lover"
+                  class="bg-gray-200 px-2 hover:underline py-1 rounded"
+                  target="_blank"
+                >
+                  <code>/albums/?name=lover</code>
+                </a>
+              </div>
+
+              <p class="text-base">Search Albums by thier keywords and name</p>
+            </div>
           </li>
           <li class="mb-5">
             <h1 class="text-xl mb-1 font-semibold">Songs</h1>
@@ -205,9 +224,26 @@
                 Get detailed information about a specific song.
               </p>
             </div>
+            <div
+              class="flex flex-col md:flex-row mb-2 items-start text-base gap-2"
+            >
+              <div>
+                <span class="bg-green-500 px-2 py-1 text-white rounded"
+                  >GET</span
+                >
+                <a
+                  href="https://taylor-swift-api.onrender.com/songs/?name=world"
+                  class="bg-gray-200 px-2 hover:underline py-1 rounded"
+                  target="_blank"
+                >
+                  <code>/songs/?name=World</code>
+                </a>
+              </div>
+              <p class="text-base">Search song by thier keywords and name</p>
+            </div>
           </li>
         </ol>
-        <hr />
+        <hr style="background-color: #3a3a3a; height: 2px" />
         <button
           class="flex items-center justify-center gap-2 sm:hidden bg-gray-300 mt-4 text-center py-2 text-black w-full"
         >
