@@ -14,15 +14,42 @@ const getSong = async (req, res) => {
     }
 
     // Get album details without the tracks property
-    const albumDetails = await getAlbumDetails(song.albumId);
+    const { albumName, albumCover, artist, releaseDate } =
+      await getAlbumDetails(song.albumId);
 
-    if (!albumDetails) {
+    if (!albumName) {
       return res.status(404).json({ error: "Album not found" });
     }
+    delete song.albumId;
 
     res.json({
       ...song,
-      album: albumDetails,
+      album: albumName,
+    });
+  } catch (error) {
+    console.error("Error fetching songs");
+    errorHandler(res, error);
+  }
+};
+
+const getRandomSong = async (req, res) => {
+  try {
+    const songs = await Song.find().select("-__v -_id").lean();
+    const song = songs[Math.floor(Math.random() * songs.length)];
+    if (!song) {
+      return res.status(404).json({ error: "Song not available" });
+    }
+    // Get album details without the tracks property
+    const { albumName, albumCover, artist, releaseDate } =
+      await getAlbumDetails(song.albumId);
+
+    if (!albumName) {
+      return res.status(404).json({ error: "Album not found" });
+    }
+    delete song.albumId;
+    res.json({
+      ...song,
+      album: albumName,
     });
   } catch (error) {
     console.error("Error fetching songs");
@@ -124,4 +151,5 @@ module.exports = {
   getAllSongs,
   newSong,
   searchSongs,
+  getRandomSong,
 };

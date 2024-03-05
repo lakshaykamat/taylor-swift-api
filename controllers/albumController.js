@@ -84,7 +84,18 @@ const deleteAlbum = async (req, res) => {
     errorHandler(res, error);
   }
 };
+const getRandomAlbum = async (req, res) => {
+  try {
+    const albums = await Album.find({}).lean().select("-__v").select("-_id");
+    let album = albums[Math.floor(Math.random() * albums.length)];
 
+    album = await enhanceAlbumWithSongsData(album);
+
+    return res.json(album);
+  } catch (error) {
+    errorHandler(res, error);
+  }
+};
 const newAlbum = async (req, res) => {
   try {
     const { title, artist, releaseDate, albumCover, user } = req.body;
@@ -108,6 +119,7 @@ const newAlbum = async (req, res) => {
 };
 
 module.exports = {
+  getRandomAlbum,
   getAllAlbums,
   deleteAlbum,
   newAlbum,
