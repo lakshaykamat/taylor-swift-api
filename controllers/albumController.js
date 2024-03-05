@@ -1,15 +1,12 @@
 const Album = require("../models/Album");
 const Song = require("../models/Song");
-const { isAdmin } = require("../utils");
+const {
+  isAdmin,
+  calculateTotalDuration,
+  cleanUpSongsData,
+  enhanceAlbumWithSongsData,
+} = require("../utils");
 const errorHandler = require("../middlewares/errorMiddleware");
-const cleanUpSongs = (songs, album) => {
-  return songs
-    .filter((song) => song !== null)
-    .map(({ albumId, ...songWithoutAlbumId }) => ({
-      ...songWithoutAlbumId,
-      album: album.title,
-    }));
-};
 
 const getAlbum = async (req, res) => {
   try {
@@ -23,15 +20,7 @@ const getAlbum = async (req, res) => {
       return res.status(404).send("Album not found");
     }
 
-    const songPromises = album.tracks.map((songId) =>
-      Song.findById(songId.toString()).select("-__v").select("-_id").lean()
-    );
-    const songs = await Promise.all(songPromises);
-
-    album.tracks = cleanUpSongs(songs, album);
-    album.songs = album.tracks.length;
-
-    res.json(album);
+    res.json(await enhanceAlbumWithSongsData(album));
   } catch (error) {
     errorHandler(res, error);
   }
@@ -41,14 +30,8 @@ const getAllAlbums = async (req, res) => {
   try {
     const albums = await Album.find({}).lean().select("-__v").select("-_id");
 
-    for (const album of albums) {
-      const songPromises = album.tracks.map((songId) =>
-        Song.findById(songId.toString()).select("-__v").select("-_id").lean()
-      );
-      const songs = await Promise.all(songPromises);
-
-      album.tracks = cleanUpSongs(songs, album);
-      album.songs = album.tracks.length;
+    for (let album of albums) {
+      album = await enhanceAlbumWithSongsData(album);
     }
 
     return res.json(albums);
@@ -66,19 +49,13 @@ const searchAlbum = async (req, res) => {
       .select("-__v -_id")
       .lean();
 
-    for (const album of albums) {
-      const songPromises = album.tracks.map((songId) =>
-        Song.findById(songId.toString()).select("-__v").select("-_id").lean()
-      );
-      const songs = await Promise.all(songPromises);
-
-      album.tracks = cleanUpSongs(songs, album);
-      album.songs = album.tracks.length;
+    for (let album of albums) {
+      album = await enhanceAlbumWithSongsData(album);
     }
 
     res.json(albums);
   } catch (error) {
-    console.error("Error searching songs:", error.message);
+    console.error("Error searching albums:", error.message);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
