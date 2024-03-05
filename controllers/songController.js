@@ -96,8 +96,8 @@ const newSong = async (req, res) => {
 
     const savedSongs = [];
 
-    for (const { name, artist, albumId, duration } of songsData) {
-      const song = new Song({ name, artist, albumId, duration });
+    for (const { name, artist, albumId, duration, lyrics } of songsData) {
+      const song = new Song({ name, artist, albumId, duration, lyrics });
       const savedSong = await song.save();
 
       const validAlbum = await Album.findById(albumId);
