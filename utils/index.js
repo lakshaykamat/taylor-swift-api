@@ -7,7 +7,7 @@ const enhanceAlbumWithSongsData = async (album) => {
   );
   const songs = await Promise.all(songPromises);
 
-  album.tracks = cleanUpSongsData(songs, album);
+  album.tracks = cleanUpSongsData(songs);
   album.trackLength = calculateTotalDuration(album.tracks);
   album.songCount = album.tracks.length;
   return album;
@@ -78,14 +78,10 @@ const calculateTotalDuration = (tracks) => {
 };
 
 // Helper function to clean up songs data
-const cleanUpSongsData = (songs, album) => {
-  return songs
-    .filter((song) => song !== null)
-    .map(({ albumId, ...songWithoutAlbumId }) => ({
-      ...songWithoutAlbumId,
-      album: album.title,
-    }));
-};
+const cleanUpSongsData = (songs) =>
+  songs
+    .filter(({ albumId }) => albumId !== null)
+    .map(({ albumId, ...songWithoutAlbumId }) => songWithoutAlbumId);
 
 module.exports = {
   isAdmin,
