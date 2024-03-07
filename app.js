@@ -1,5 +1,5 @@
 const express = require("express");
-const bodyParser = require("body-parser"); // Required for parsing request bodies
+const bodyParser = require("body-parser");
 const cors = require("cors");
 const helmet = require("helmet");
 const morgan = require("morgan");
@@ -9,6 +9,7 @@ const Song = require("./models/Song");
 const Album = require("./models/Album");
 const { getAlbum } = require("./controllers/albumController");
 const { getSong } = require("./controllers/songController");
+const setHeaderInformation = require("./middlewares/setHeaderInformation");
 const app = express();
 const port = 3000;
 
@@ -20,16 +21,10 @@ app.use(helmet());
 app.use(morgan("dev"));
 app.use(bodyParser.json()); // Parse JSON requests
 
-// Specify the path to the images folder
-const imagesPath = path.join(__dirname, "/public/images");
-// Serve static files from the images folder
-app.use("/images", express.static(imagesPath));
+app.use("/images", express.static(path.join(__dirname, "/public/images"))); // Serve static files from the images folder
 
-// Set EJS as the view engine
-app.set("view engine", "ejs");
-
-// Specify the directory where your views/templates are located (optional)
-app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "ejs"); // Serve static files from the images folder
+app.set("views", path.join(__dirname, "views")); // Specify the views directory
 
 app.get("/", async (req, res) => {
   const githubLink = "https://github.com/lakshaykamat/taylor-swift-api";
@@ -42,10 +37,11 @@ app.get("/", async (req, res) => {
     appName: "Taylor Swift API",
   });
 });
+app.use(setHeaderInformation); // Set Header information to all routes
 
-// Use routes from separate files
 app.use("/albums", require("./routes/album"));
 app.use("/songs", require("./routes/song"));
+app.use("/quotes", require("./routes/quote"));
 
 app.get("/album/:name", getAlbum);
 app.get("/song/:name", getSong);

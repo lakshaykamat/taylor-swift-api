@@ -1,11 +1,6 @@
 const Album = require("../models/Album");
 const Song = require("../models/Song");
-const {
-  isAdmin,
-  calculateTotalDuration,
-  cleanUpSongsData,
-  enhanceAlbumWithSongsData,
-} = require("../utils");
+const { isAdmin, enhanceAlbumWithSongsData } = require("../utils");
 const errorHandler = require("../middlewares/errorMiddleware");
 
 const getAlbum = async (req, res) => {
