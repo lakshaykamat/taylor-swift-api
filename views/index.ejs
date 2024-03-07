@@ -126,6 +126,7 @@
         <hr />
         <hr style="background-color: #3a3a3a; height: 2px" />
         <ol class="list-decimal px-7 my-5 text-xl">
+          <!-- ---Albums--- -->
           <li class="mb-5">
             <h1 class="text-xl mb-1 font-semibold">Albums</h1>
             <div
@@ -203,6 +204,8 @@
               <p class="text-base">Search Albums by thier keywords and name</p>
             </div>
           </li>
+
+          <!-- ---Songs--- -->
           <li class="mb-5">
             <h1 class="text-xl mb-1 font-semibold">Songs</h1>
             <div
@@ -277,6 +280,137 @@
               <p class="text-base">Search song by thier keywords and name</p>
             </div>
           </li>
+
+          <!-- Quotes -->
+          <li class="mb-5">
+            <h1 class="text-xl mb-2 font-semibold">Quotes</h1>
+            <div
+              class="flex flex-col md:flex-row mb-2 items-start text-base gap-2"
+            >
+              <div>
+                <span class="bg-green-500 px-2 py-1 text-white rounded"
+                  >GET</span
+                >
+                <a
+                  href="https://taylor-swift-api.onrender.com/quotes"
+                  class="bg-gray-200 px-2 hover:underline py-1 rounded"
+                  target="_blank"
+                >
+                  <code>/quotes</code>
+                </a>
+              </div>
+
+              <p class="text-base">Get a random quote from a song.</p>
+            </div>
+            <ul class="list-disc px-10 mt-2 text-base">
+              <h1 class="mb-2 text-lg font-semibold">Query Parameter</h1>
+              <li class="mb-1">
+                <div class="flex flex-col sm:flex-row items-center gap-2">
+                  <a
+                    href="https://taylor-swift-api.onrender.com/quotes?album=1989"
+                    class="bg-gray-200 text-sm px-2 hover:underline py-1 rounded"
+                    target="_blank"
+                  >
+                    <code>/quotes/?album=1989</code>
+                  </a>
+                  <p>Gives a random quote of an album</p>
+                </div>
+              </li>
+              <li class="mb-1">
+                <div class="flex flex-col sm:flex-row items-center gap-2">
+                  <a
+                    href="https://taylor-swift-api.onrender.com/quotes?song=Lover"
+                    class="bg-gray-200 text-sm px-2 hover:underline py-1 rounded"
+                    target="_blank"
+                  >
+                    <code>/quotes/?song=Lover</code>
+                  </a>
+                  <p>Gives a random quote of an song</p>
+                </div>
+              </li>
+            </ul>
+            <div
+              class="flex flex-col md:flex-row my-2 items-start text-base gap-2"
+            >
+              <div>
+                <span class="bg-green-500 px-2 py-1 text-white rounded"
+                  >GET</span
+                >
+                <a
+                  href="https://taylor-swift-api.onrender.com/quotes/all"
+                  class="bg-gray-200 px-2 hover:underline py-1 rounded"
+                  target="_blank"
+                >
+                  <code>/quotes/all</code>
+                </a>
+              </div>
+              <p class="text-base">
+                Get a list of quotes of all songs and albums
+              </p>
+            </div>
+            <ul class="list-disc px-10 mt-2 text-base">
+              <h1 class="mb-2 text-lg font-semibold">Query Parameter</h1>
+              <li class="mb-1">
+                <div class="flex flex-col sm:flex-row items-center gap-2">
+                  <a
+                    href="https://taylor-swift-api.onrender.com/quotes/all/?album=1989"
+                    class="bg-gray-200 text-sm px-2 hover:underline py-1 rounded"
+                    target="_blank"
+                  >
+                    <code>/quotes/all/?album=1989</code>
+                  </a>
+                  <p>Gives a list of quote of an album</p>
+                </div>
+              </li>
+              <li class="mb-1">
+                <div class="flex flex-col sm:flex-row items-center gap-2">
+                  <a
+                    href="https://taylor-swift-api.onrender.com/quotes/all/?song=Lover"
+                    class="bg-gray-200 text-sm px-2 hover:underline py-1 rounded"
+                    target="_blank"
+                  >
+                    <code>/quotes/all/?song=Lover</code>
+                  </a>
+                  <p>Gives a list of quote of an song</p>
+                </div>
+              </li>
+            </ul>
+
+            <!-- <div
+              class="flex flex-col md:flex-row mb-2 items-start text-base gap-2"
+            >
+              <div>
+                <span class="bg-green-500 px-2 py-1 text-white rounded"
+                  >GET</span
+                >
+                <a
+                  href="https://taylor-swift-api.onrender.com/songs/random"
+                  class="bg-gray-200 px-2 hover:underline py-1 rounded"
+                  target="_blank"
+                >
+                  <code>/songs/random</code>
+                </a>
+              </div>
+              <p class="text-base">Gives a random song</p>
+            </div> -->
+            <!-- <div
+              class="flex flex-col md:flex-row mb-2 items-start text-base gap-2"
+            >
+              <div>
+                <span class="bg-green-500 px-2 py-1 text-white rounded"
+                  >GET</span
+                >
+                <a
+                  href="https://taylor-swift-api.onrender.com/songs/search/?name=world"
+                  class="bg-gray-200 px-2 hover:underline py-1 rounded"
+                  target="_blank"
+                >
+                  <code>/songs/search/?name=World</code>
+                </a>
+              </div>
+              <p class="text-base">Search song by thier keywords and name</p>
+            </div> -->
+          </li>
         </ol>
         <hr style="background-color: #3a3a3a; height: 2px" />
         <button
@@ -294,6 +428,8 @@
             /><span>Github</span></a
           >
         </button>
+
+        <!-- ---Credits--- -->
         <div class="flex flex-wrap mt-4 items-center gap-4">
           <h2 class="text-xl font-semibold">Credits</h2>
           <a
