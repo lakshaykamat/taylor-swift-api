@@ -118,8 +118,8 @@ const newSong = async (req, res) => {
     }
 
     // Check if the album exists
-    const album = await Album.findById(albumId);
-    if (!album) {
+    const specifedAlbum = await Album.findById(albumId);
+    if (!specifedAlbum) {
       return res
         .status(HTTP_STATUS_CODES.NOT_FOUND)
         .json({ error: "Album not found" });
@@ -133,7 +133,14 @@ const newSong = async (req, res) => {
     }
 
     // Create and save each song
-    for (const { name, artist, duration, lyrics, album } of songsData) {
+    for (const {
+      name,
+      artist,
+      albumId,
+      duration,
+      lyrics,
+      album,
+    } of songsData) {
       const existingSong = await Song.findOne({ name });
       if (existingSong) {
         return res
@@ -144,13 +151,13 @@ const newSong = async (req, res) => {
       const savedSong = await song.save();
 
       // Add the new song's ID to the album's tracks array
-      album.tracks.push(savedSong._id);
+      specifedAlbum.tracks.push(savedSong._id);
     }
 
     // Save the updated album with the new songs
-    await album.save();
+    await specifedAlbum.save();
 
-    res.json(album);
+    res.json(specifedAlbum);
   } catch (error) {
     console.error(
       "Error creating a song and updating an album:",
