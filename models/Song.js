@@ -4,6 +4,7 @@ const songSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
+    unique: true,
   },
   artist: {
     type: String,
@@ -12,6 +13,10 @@ const songSchema = new mongoose.Schema({
   albumId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Album",
+  },
+  album: {
+    type: String,
+    required: true,
   },
   duration: {
     type: String,
