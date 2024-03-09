@@ -8,6 +8,7 @@
   },
   "scripts": {
     "start": "node --env-file=config.env app.js",
+    "dev": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -21,5 +22,8 @@
     "helmet": "^7.1.0",
     "mongoose": "^8.2.0",
     "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
   }
 }
