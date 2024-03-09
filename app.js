@@ -5,10 +5,6 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 const path = require("path");
 const connectToMongoDB = require("./database");
-const Song = require("./models/Song");
-const Album = require("./models/Album");
-const { getAlbum } = require("./controllers/albumController");
-const { getSong } = require("./controllers/songController");
 const setHeaderInformation = require("./middlewares/setHeaderInformation");
 const app = express();
 const port = 3000;
@@ -42,9 +38,6 @@ app.use(setHeaderInformation); // Set Header information to all routes
 app.use("/albums", require("./routes/album"));
 app.use("/songs", require("./routes/song"));
 app.use("/quotes", require("./routes/quote"));
-
-app.get("/album/:name", getAlbum);
-app.get("/song/:name", getSong);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

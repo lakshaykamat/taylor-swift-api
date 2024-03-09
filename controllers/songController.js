@@ -1,37 +1,28 @@
 const Song = require("../models/Song");
 const Album = require("../models/Album");
-const { isAdmin, getAlbumDetails } = require("../utils");
+const { isAdmin } = require("../utils");
 const errorHandler = require("../middlewares/errorMiddleware");
+const HTTP_STATUS_CODES = require("../constants/HttpStatusCodes");
 
 /**
  * Get details of a song by its name
  */
 const getSong = async (req, res) => {
   try {
-    const { name } = req.params;
-    const song = await Song.findOne({ name: { $regex: name, $options: "i" } })
-      .select("-__v -_id")
+    const { songName } = req.params;
+    const song = await Song.findOne({ name: songName })
+      .select("-__v -_id -albumId")
       .lean();
 
     if (!song) {
-      return res.status(404).json({ error: "Song not available" });
+      return res
+        .status(HTTP_STATUS_CODES.NOT_FOUND)
+        .json({ error: "Song not available" });
     }
 
-    // Get album details without the tracks property
-    const { albumName, albumCover, artist, releaseDate } =
-      await getAlbumDetails(song.albumId);
-
-    song.album = {
-      name: albumName,
-      coverImage: albumCover,
-      artist: artist,
-      releaseDate: releaseDate,
-    };
-    delete song.albumId;
-
-    res.json(song);
+    return res.status(HTTP_STATUS_CODES.OK).json(song);
   } catch (error) {
-    console.error("Error fetching songs");
+    console.error("Error fetching songs:", error.message);
     errorHandler(res, error);
   }
 };
@@ -41,28 +32,34 @@ const getSong = async (req, res) => {
  */
 const getRandomSong = async (req, res) => {
   try {
-    const songs = await Song.find().select("-__v -_id").lean();
+    const songs = await Song.find().select("-__v -_id -albumId");
     const song = songs[Math.floor(Math.random() * songs.length)];
 
     if (!song) {
-      return res.status(404).json({ error: "Song not available" });
+      return res
+        .status(HTTP_STATUS_CODES.NOT_FOUND)
+        .json({ error: "Song not found" });
     }
 
-    // Get album details without the tracks property
-    const { albumName, albumCover, artist, releaseDate } =
-      await getAlbumDetails(song.albumId);
-
-    song.album = {
-      name: albumName,
-      coverImage: albumCover,
-      artist: artist,
-      releaseDate: releaseDate,
-    };
-    delete song.albumId;
-
-    res.json(song);
+    res.status(HTTP_STATUS_CODES.OK).json(song);
   } catch (error) {
-    console.error("Error fetching songs");
+    console.error("Error fetching songs:", error.message);
+    errorHandler(res, error);
+  }
+};
+
+/**
+ * Get songs by album name
+ */
+const getSongsByAlbum = async (req, res) => {
+  try {
+    const { albumName } = req.params;
+    const songs = await Song.find({ album: albumName }).select(
+      "-__v -_id -albumId"
+    );
+    return res.status(HTTP_STATUS_CODES.OK).json(songs);
+  } catch (error) {
+    console.error("Error fetching songs:", error.message);
     errorHandler(res, error);
   }
 };
@@ -72,24 +69,19 @@ const getRandomSong = async (req, res) => {
  */
 const getAllSongs = async (req, res) => {
   try {
-    const songs = await Song.find().select("-__v -_id").lean();
+    const { songName } = req.query;
 
-    for (const song of songs) {
-      const { albumName, albumCover, artist, releaseDate } =
-        await getAlbumDetails(song.albumId);
-
-      song.album = {
-        name: albumName,
-        coverImage: albumCover,
-        artist: artist,
-        releaseDate: releaseDate,
-      };
-      delete song.albumId;
+    if (songName) {
+      const albums = await Song.find({
+        name: { $regex: songName, $options: "i" },
+      }).select("-__v -_id -albumId");
+      return res.status(HTTP_STATUS_CODES.OK).json(albums);
     }
 
-    res.json(songs);
+    const songs = await Song.find().select("-__v -_id -albumId");
+    return res.status(HTTP_STATUS_CODES.OK).json(songs);
   } catch (error) {
-    console.error("Error fetching songs");
+    console.error("Error fetching songs:", error.message);
     errorHandler(res, error);
   }
 };
@@ -101,32 +93,15 @@ const searchSongs = async (req, res) => {
   const { name } = req.query;
 
   try {
-    // Use a regular expression to perform a case-insensitive search
-    const songs = await Song.find({ name: { $regex: name, $options: "i" } })
-      .select("-__v -_id")
-      .lean();
-
-    // Fetch additional album details for each song
-    const songsWithAlbum = await Promise.all(
-      songs.map(async (song) => {
-        const { albumName, albumCover, artist, releaseDate } =
-          await getAlbumDetails(song.albumId);
-        song.album = {
-          name: albumName,
-          coverImage: albumCover,
-          artist: artist,
-          releaseDate: releaseDate,
-        };
-        delete song.albumId;
-
-        return song;
-      })
-    );
-
-    res.json(songsWithAlbum);
+    const songs = await Song.find({
+      name: { $regex: name, $options: "i" },
+    }).select("-__v -_id -albumId");
+    return res.status(HTTP_STATUS_CODES.OK).json(songs);
   } catch (error) {
     console.error("Error searching songs:", error.message);
-    res.status(500).json({ error: "Internal Server Error" });
+    res
+      .status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR)
+      .json({ error: "Internal Server Error" });
   }
 };
 
@@ -139,27 +114,33 @@ const newSong = async (req, res) => {
 
     // Check user credentials
     if (!user || !isAdmin(user.username, user.password)) {
-      return res.status(403).send("Forbidden");
+      return res.status(HTTP_STATUS_CODES.FORBIDDEN).send("Forbidden");
     }
 
     // Check if the album exists
     const album = await Album.findById(albumId);
     if (!album) {
-      return res.status(404).json({ error: "Album not found" });
+      return res
+        .status(HTTP_STATUS_CODES.NOT_FOUND)
+        .json({ error: "Album not found" });
     }
 
     // Check if songsData is a valid array
     if (!Array.isArray(songsData) || songsData.length === 0) {
       return res
-        .status(400)
+        .status(HTTP_STATUS_CODES.BAD_REQUEST)
         .json({ error: "Invalid request. Expected an array of songs." });
     }
 
-    const savedSongs = [];
-
     // Create and save each song
-    for (const { name, artist, duration, lyrics } of songsData) {
-      const song = new Song({ name, artist, albumId, duration, lyrics });
+    for (const { name, artist, duration, lyrics, album } of songsData) {
+      const existingSong = await Song.findOne({ name });
+      if (existingSong) {
+        return res
+          .status(HTTP_STATUS_CODES.BAD_REQUEST)
+          .json({ error: `Song exists with this name:"${name}"` });
+      }
+      const song = new Song({ name, artist, albumId, duration, lyrics, album });
       const savedSong = await song.save();
 
       // Add the new song's ID to the album's tracks array
@@ -171,8 +152,11 @@ const newSong = async (req, res) => {
 
     res.json(album);
   } catch (error) {
-    console.error("Error creating a song and updating an album");
-    errorHandler(res, error);
+    console.error(
+      "Error creating a song and updating an album:",
+      error.message
+    );
+    errorHandler("Error creating a song and updating an album:", res, error);
   }
 };
 
@@ -182,4 +166,5 @@ module.exports = {
   newSong,
   searchSongs,
   getRandomSong,
+  getSongsByAlbum,
 };
