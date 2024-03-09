@@ -1,35 +1,38 @@
 const Album = require("../models/Album");
 const Song = require("../models/Song");
-const { isAdmin, enhanceAlbumWithSongsData } = require("../utils");
+const { isAdmin } = require("../utils");
 const errorHandler = require("../middlewares/errorMiddleware");
+const HTTP_STATUS_CODES = require("../constants/HttpStatusCodes");
 
 const getAlbum = async (req, res) => {
   try {
-    const { name } = req.params;
-    const album = await Album.findOne({ title: name })
-      .select("-__v")
-      .select("-_id")
-      .lean();
+    const { albumName } = req.params;
+    const album = await Album.findOne({ title: albumName }).select(
+      "-__v -_id -tracks"
+    );
 
     if (!album) {
-      return res.status(404).send("Album not found");
+      return res.status(HTTP_STATUS_CODES.NOT_FOUND).send("Album not found");
     }
 
-    res.json(await enhanceAlbumWithSongsData(album));
+    return res.status(HTTP_STATUS_CODES.OK).json(album);
   } catch (error) {
     errorHandler(res, error);
   }
 };
 
 const getAllAlbums = async (req, res) => {
+  const { albumName } = req.query;
   try {
-    const albums = await Album.find({}).lean().select("-__v").select("-_id");
-
-    for (let album of albums) {
-      album = await enhanceAlbumWithSongsData(album);
+    if (albumName) {
+      const albums = await Album.find({
+        title: { $regex: albumName, $options: "i" },
+      }).select("-__v -_id -tracks");
+      return res.status(HTTP_STATUS_CODES.OK).json(albums);
     }
+    const albums = await Album.find({}).lean().select("-__v -_id -tracks");
 
-    return res.json(albums);
+    return res.status(HTTP_STATUS_CODES.OK).json(albums);
   } catch (error) {
     errorHandler(res, error);
   }
@@ -39,19 +42,16 @@ const searchAlbum = async (req, res) => {
   const { name } = req.query;
 
   try {
-    // Use a regular expression to perform a case-insensitive search
-    const albums = await Album.find({ title: { $regex: name, $options: "i" } })
-      .select("-__v -_id")
-      .lean();
+    const albums = await Album.find({
+      title: { $regex: name, $options: "i" },
+    }).select("-__v -_id -tracks");
 
-    for (let album of albums) {
-      album = await enhanceAlbumWithSongsData(album);
-    }
-
-    res.json(albums);
+    res.status(HTTP_STATUS_CODES.OK).json(albums);
   } catch (error) {
     console.error("Error searching albums:", error.message);
-    res.status(500).json({ error: "Internal Server Error" });
+    res
+      .status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR)
+      .json({ error: "Internal Server Error" });
   }
 };
 
@@ -60,13 +60,15 @@ const deleteAlbum = async (req, res) => {
     const { id } = req.params;
     const { user } = req.body;
     if (!user || !isAdmin(user.username, user.password)) {
-      return res.status(403).send("Forbidden");
+      return res.status(HTTP_STATUS_CODES.FORBIDDEN).send("Forbidden");
     }
 
     const albumToDelete = await Album.findById(id).populate("tracks");
 
     if (!albumToDelete) {
-      return res.status(404).json({ error: "Album not found" });
+      return res
+        .status(HTTP_STATUS_CODES.NOT_FOUND)
+        .json({ error: "Album not found" });
     }
 
     const songIdsToDelete = albumToDelete.tracks.map((song) => song._id);
@@ -79,23 +81,27 @@ const deleteAlbum = async (req, res) => {
     errorHandler(res, error);
   }
 };
+
 const getRandomAlbum = async (req, res) => {
   try {
-    const albums = await Album.find({}).lean().select("-__v").select("-_id");
-    let album = albums[Math.floor(Math.random() * albums.length)];
-
-    album = await enhanceAlbumWithSongsData(album);
-
-    return res.json(album);
+    const albums = await Album.find().select("-__v -id -tracks");
+    const album = albums[Math.floor(Math.random() * albums.length)];
+    if (!album) {
+      return res
+        .status(HTTP_STATUS_CODES.NOT_FOUND)
+        .json({ error: "Song not found" });
+    }
+    return res.status(HTTP_STATUS_CODES.OK).json(album);
   } catch (error) {
     errorHandler(res, error);
   }
 };
+
 const newAlbum = async (req, res) => {
   try {
     const { title, artist, releaseDate, albumCover, user } = req.body;
     if (!user || !isAdmin(user.username, user.password)) {
-      return res.status(403).send("Forbidden");
+      return res.status(HTTP_STATUS_CODES.FORBIDDEN).send("Forbidden");
     }
     const newAlbum = new Album({
       title,

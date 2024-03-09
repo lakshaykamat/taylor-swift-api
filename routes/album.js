@@ -4,14 +4,16 @@ const {
   deleteAlbum,
   newAlbum,
   searchAlbum,
+  getAlbum,
   getRandomAlbum,
 } = require("../controllers/albumController");
 const router = express.Router();
 
 router.route("/").get(getAllAlbums);
-router.route("/search").get(searchAlbum);
 router.route("/random").get(getRandomAlbum);
-router.route("/:id").delete(deleteAlbum);
 router.route("/newalbum").post(newAlbum);
+
+router.route("/delete/:id").delete(deleteAlbum);
+router.route("/:albumName").get(getAlbum);
 
 module.exports = router;
