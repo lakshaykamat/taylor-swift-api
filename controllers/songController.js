@@ -134,6 +134,12 @@ const newSong = async (req, res) => {
 
     // Create and save each song
     for (const { name, artist, duration, lyrics, album } of songsData) {
+      const existingSong = await Song.findOne({ name });
+      if (existingSong) {
+        return res
+          .status(HTTP_STATUS_CODES.BAD_REQUEST)
+          .json({ error: `Song exists with this name:"${name}"` });
+      }
       const song = new Song({ name, artist, albumId, duration, lyrics, album });
       const savedSong = await song.save();
 
@@ -150,7 +156,7 @@ const newSong = async (req, res) => {
       "Error creating a song and updating an album:",
       error.message
     );
-    errorHandler(res, error);
+    errorHandler("Error creating a song and updating an album:", res, error);
   }
 };
 

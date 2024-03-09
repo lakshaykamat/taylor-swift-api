@@ -103,6 +103,13 @@ const newAlbum = async (req, res) => {
     if (!user || !isAdmin(user.username, user.password)) {
       return res.status(HTTP_STATUS_CODES.FORBIDDEN).send("Forbidden");
     }
+
+    const existingAlbum = await Album.findOne({ title: title });
+    if (existingAlbum) {
+      return res.status(HTTP_STATUS_CODES.BAD_REQUEST).json({
+        error: `Album exist with this title:${title}`,
+      });
+    }
     const newAlbum = new Album({
       title,
       artist,
@@ -115,7 +122,7 @@ const newAlbum = async (req, res) => {
 
     res.json(savedAlbum);
   } catch (error) {
-    errorHandler(res, error);
+    errorHandler("Unable to Create Album", res, error);
   }
 };
 
