@@ -9,6 +9,7 @@
   "scripts": {
     "start": "node --env-file=config.env app.js",
     "dev": "nodemon --env-file=config.env app.js",
+    "vercel-build": "echo Hello",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
