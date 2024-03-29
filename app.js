@@ -17,12 +17,16 @@ app.use(helmet());
 app.use(morgan("dev"));
 app.use(bodyParser.json()); // Parse JSON requests
 
-app.use("/images", express.static(path.join(__dirname, "/public/images"))); // Serve static files from the images folder
+app.get("/", (req, res) => {
+  res.redirect("/api");
+});
+
+app.use("/api/images", express.static(path.join(__dirname, "/public/images"))); // Serve static files from the images folder
 
 app.set("view engine", "ejs"); // Serve static files from the images folder
 app.set("views", path.join(__dirname, "views")); // Specify the views directory
 
-app.get("/", async (req, res) => {
+app.get("/api", async (req, res) => {
   const githubLink = "https://github.com/lakshaykamat/taylor-swift-api";
   const credist = [
     { name: "Lakshay Kamat", githubLink: "https://github.com/lakshaykamat" },
